@@ -9,7 +9,6 @@ export const auth = defineAuth({
     phone: true,
   },
   userAttributes: {
-    // specify a "birthdate" attribute
     gender: {
       mutable: true,
       required: false,
