@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Schema } from "../amplify/data/resource";
+// import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 
 const client = generateClient<Schema>();
@@ -8,9 +8,10 @@ function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
 
   useEffect(() => {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
+    setTodos(['todo1', 'todo2', 'todo3']);
+    // client.models.Todo.observeQuery().subscribe({
+    //   next: (data) => setTodos([...data.items]),
+    // });
   }, []);
 
   function createTodo() {
