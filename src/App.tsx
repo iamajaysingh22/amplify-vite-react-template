@@ -1,29 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { signUp } from "aws-amplify/auth"
 // import type { Schema } from "../amplify/data/resource";
 // import { generateClient } from "aws-amplify/data";
 
 // const client = generateClient<Schema>();
 
 function App() {
-  // const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
-  const [todos, setTodos] = useState<string[]>([]);
+ 
 
   useEffect(() => {
-    console.log(todos);
-    setTodos(['todo1', 'todo2', 'todo3']);
-    // client.models.Todo.observeQuery().subscribe({
-    //   next: (data) => setTodos([...data.items]),
-    // });
+   
   }, []);
 
-  function createTodo() {
+  const signUpWithPhone= async()=>{
+
+    const { isSignUpComplete, userId, nextStep } = await signUp({
+      username: "+919910184570",
+      password: "hunter2",
+      options: {
+        userAttributes: {
+          email: "hello@mycompany.com",
+          gender:'male',
+          phone_number: "+919910184570" // E.164 number convention
+        },
+      }
+    });
+    console.log(isSignUpComplete, userId, nextStep);
     // client.models.Todo.create({ content: window.prompt("Todo content") });
   }
 
   return (
     <main>
       <h1>My todos</h1>
-      <button onClick={createTodo}>+ new</button>
+      {/* <button onClick={createTodo}>+ new</button> */}
       <ul>
         {/* {todos.map((todo) => (
           <li key={todo.id}>{todo.content}</li>
@@ -35,6 +44,16 @@ function App() {
         <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
           Review next step of this tutorial.
         </a>
+      </div>
+      // create a form to get phone no
+      <form>
+        <label>
+          Phone:
+          <input type="text" name="phone" />
+        </label>
+        </form>
+      <div>
+        <button onClick={signUpWithPhone}>Sign Up with Phone</button>
       </div>
     </main>
   );
