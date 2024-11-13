@@ -9,6 +9,7 @@ function App() {
   const [todos, setTodos] = useState<string[]>([]);
 
   useEffect(() => {
+    console.log(todos);
     setTodos(['todo1', 'todo2', 'todo3']);
     // client.models.Todo.observeQuery().subscribe({
     //   next: (data) => setTodos([...data.items]),
