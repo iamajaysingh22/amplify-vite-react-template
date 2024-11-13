@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { signUp } from "aws-amplify/auth"
+import { useEffect, useState } from "react";
+import { signUp, confirmSignUp } from "aws-amplify/auth"
 // import type { Schema } from "../amplify/data/resource";
 // import { generateClient } from "aws-amplify/data";
 
@@ -7,7 +7,8 @@ import { signUp } from "aws-amplify/auth"
 
 function App() {
  
-
+  const [otp ,setOtp]=useState<string>('');
+  const [phone ,setPhone]=useState<string>('');
   useEffect(() => {
    
   }, []);
@@ -29,6 +30,16 @@ function App() {
     // client.models.Todo.create({ content: window.prompt("Todo content") });
   }
 
+  const confirnSignUpWithPhone= async()=>{
+    const { isSignUpComplete, nextStep } = await confirmSignUp({
+      username: "+919910184570",
+      confirmationCode: otp
+    });
+    console.log(isSignUpComplete, nextStep);
+  }
+
+
+
   return (
     <main>
       <h1>My todos</h1>
@@ -49,11 +60,18 @@ function App() {
       <form>
         <label>
           Phone:
-          <input type="text" name="phone" />
+          <input type="text" name="phone" value={phone} onChange={(e)=> setPhone(e.target.value)} />
+        </label>
+        <label>
+          OTP:
+          <input type="text" name="otp" value={otp} onChange={(e) => setOtp(e.target.value)} />
         </label>
         </form>
       <div>
         <button onClick={signUpWithPhone}>Sign Up with Phone</button>
+      </div>
+      <div>
+        <button onClick={confirnSignUpWithPhone}>Confirn signUp!</button>
       </div>
     </main>
   );
