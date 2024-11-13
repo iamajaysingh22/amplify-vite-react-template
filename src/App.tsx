@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { signUp, confirmSignUp } from "aws-amplify/auth"
+import { signUp, confirmSignUp,resendSignUpCode } from "aws-amplify/auth"
 // import type { Schema } from "../amplify/data/resource";
 // import { generateClient } from "aws-amplify/data";
 
@@ -15,6 +15,8 @@ function App() {
 
   const signUpWithPhone= async()=>{
 
+    try {
+
     const { isSignUpComplete, userId, nextStep } = await signUp({
       username: "+919910184570",
       password: "hunter2@44414Frrssss",
@@ -27,6 +29,14 @@ function App() {
       }
     });
     console.log(isSignUpComplete, userId, nextStep);
+  } catch (error:any) {
+    console.log('error',error);
+    if(error.code==='UsernameExistsException'){
+      console.log('User already exists');
+      resendSignUpCodeWithPhone();
+    }
+    
+  }
     // client.models.Todo.create({ content: window.prompt("Todo content") });
   }
 
@@ -36,6 +46,12 @@ function App() {
       confirmationCode: otp
     });
     console.log(isSignUpComplete, nextStep);
+  }
+  const resendSignUpCodeWithPhone= async()=>{
+   const {destination,deliveryMedium,attributeName }  = await resendSignUpCode({
+      username: "+919910184570"
+    });
+    console.log(destination,deliveryMedium,attributeName);
   }
 
 
