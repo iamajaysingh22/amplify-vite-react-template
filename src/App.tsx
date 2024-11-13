@@ -16,7 +16,7 @@ function App() {
 
     const { isSignUpComplete, userId, nextStep } = await signUp({
       username: "+919910184570",
-      password: "hunter2",
+      password: "hunter2@44414Frrssss",
       options: {
         userAttributes: {
           email: "hello@mycompany.com",
