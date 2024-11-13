@@ -1,4 +1,4 @@
-import { defineAuth } from '@aws-amplify/backend';
+import { defineAuth } from "@aws-amplify/backend";
 
 /**
  * Define and configure your auth resource
@@ -6,7 +6,7 @@ import { defineAuth } from '@aws-amplify/backend';
  */
 export const auth = defineAuth({
   loginWith: {
-   phone:true
+    phone: true,
   },
   userAttributes: {
     gender: {
@@ -19,8 +19,9 @@ export const auth = defineAuth({
     },
   },
   multifactor: {
-    mode: 'REQUIRED',
+    mode: "REQUIRED",
     sms: true,
   },
+  accountRecovery: "NONE",
   groups: ["ADMINS", "APP_USERS"],
 });
