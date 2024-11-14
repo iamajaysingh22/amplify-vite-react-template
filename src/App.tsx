@@ -28,19 +28,35 @@ function App() {
           },
         }
       });
-      setSuccessMessage("Sign up successful. Please check your phone for the OTP.");
+     
+      setSuccessMessage(`Please check your phone no ${phone} for the OTP.`);
       setErrorMessage(null);
       console.log(isSignUpComplete, userId, nextStep);
     } catch (error: any) {
       console.log('error==', JSON.stringify(error));
-      setErrorMessage(error.message);
-      setSuccessMessage(null);
-      if (error === 'UsernameExistsException') {
-        console.log('User already exists');
-        resendSignUpCodeWithPhone();
-      }
+      handleSignUpError(error);
     }
   }
+
+  const  handleSignUpError= (error:any)=>{
+    if (error?.name) {
+        switch (error.name) {
+            case 'EmptySignUpUsername':
+                setErrorMessage('Please provide valid phone number.');
+                setSuccessMessage(null);
+                break;
+            case 'UsernameExistsException':
+                
+                
+                resendSignUpCodeWithPhone();
+                break;
+            default:
+                alert('Error occurred: ' + error.message);
+        }
+    } else {
+        alert('Error: ' + error.message);
+    }
+}
 
   const confirmSignUpWithPhone = async () => {
     try {
@@ -48,8 +64,10 @@ function App() {
         username: phone,
         confirmationCode: otp
       });
+      if(isSignUpComplete){
       setSuccessMessage("Sign up confirmed successfully.");
       setErrorMessage(null);
+      }
       console.log(isSignUpComplete, nextStep);
     } catch (error: any) {
       console.log('error', error);
@@ -63,7 +81,7 @@ function App() {
       const { destination, deliveryMedium, attributeName } = await resendSignUpCode({
         username: phone
       });
-      setSuccessMessage("OTP resent successfully.");
+      setSuccessMessage(`Please check your phone no ${destination} for the OTP.`);
       setErrorMessage(null);
       console.log(destination, deliveryMedium, attributeName);
     } catch (error: any) {
